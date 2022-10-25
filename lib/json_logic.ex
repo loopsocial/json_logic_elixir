@@ -3,197 +3,216 @@ defmodule JsonLogic do
   An Elixir implementation of [JsonLogic](http://jsonlogic.com/).
 
   ## Examples
-      iex> JsonLogic.apply(nil)
-      nil
+  iex> JsonLogic.apply(nil)
+  nil
 
-      iex> JsonLogic.apply(%{})
-      %{}
+  iex> JsonLogic.apply(%{})
+  %{}
 
-      iex> JsonLogic.apply(%{"var" => "key"}, %{"key" => "value"})
-      "value"
+  iex> JsonLogic.apply(%{"var" => "key"}, %{"key" => "value"})
+  "value"
 
-      iex> JsonLogic.apply(%{"var" => "nested.key"}, %{"nested" => %{"key" => "value"}})
-      "value"
+  iex> JsonLogic.apply(%{"var" => "nested.key"}, %{"nested" => %{"key" => "value"}})
+  "value"
 
-      iex> JsonLogic.apply(%{"var" => ["none", "default"]}, %{"key" => "value"})
-      "default"
+  iex> JsonLogic.apply(%{"var" => ["none", "default"]}, %{"key" => "value"})
+  "default"
 
-      iex> JsonLogic.apply(%{"var" => 0}, ~w{a b})
-      "a"
+  iex> JsonLogic.apply(%{"var" => 0}, ~w{a b})
+  "a"
 
-      iex> JsonLogic.apply(%{"==" => [1, 1]})
-      true
+  iex> JsonLogic.apply(%{"==" => [1, 1]})
+  true
 
-      iex> JsonLogic.apply(%{"==" => [0, 1]})
-      false
+  iex> JsonLogic.apply(%{"==" => [0, 1]})
+  false
 
-      iex> JsonLogic.apply(%{"!=" => [1, 1]})
-      false
+  iex> JsonLogic.apply(%{"!=" => [1, 1]})
+  false
 
-      iex> JsonLogic.apply(%{"!=" => [0, 1]})
-      true
+  iex> JsonLogic.apply(%{"!=" => [0, 1]})
+  true
 
-      iex> JsonLogic.apply(%{"===" => [1, 1]})
-      true
+  iex> JsonLogic.apply(%{"===" => [1, 1]})
+  true
 
-      iex> JsonLogic.apply(%{"===" => [1, 1.0]})
-      false
+  iex> JsonLogic.apply(%{"===" => [1, 1.0]})
+  false
 
-      iex> JsonLogic.apply(%{"===" => [1, %{"var" => "key"}]}, %{"key" => 1})
-      true
+  iex> JsonLogic.apply(%{"===" => [1, %{"var" => "key"}]}, %{"key" => 1})
+  true
 
-      iex> JsonLogic.apply(%{"!==" => [1, 1.0]})
-      true
+  iex> JsonLogic.apply(%{"!==" => [1, 1.0]})
+  true
 
-      iex> JsonLogic.apply(%{"!==" => [1, 1]})
-      false
+  iex> JsonLogic.apply(%{"!==" => [1, 1]})
+  false
 
-      iex> JsonLogic.apply(%{"!" => true})
-      false
+  iex> JsonLogic.apply(%{"!" => true})
+  false
 
-      iex> JsonLogic.apply(%{"!" => false})
-      true
+  iex> JsonLogic.apply(%{"!" => false})
+  true
 
-      iex> JsonLogic.apply(%{"if" => [true, "yes", "no" ]})
-      "yes"
+  iex> JsonLogic.apply(%{"if" => [true, "yes", "no" ]})
+  "yes"
 
-      iex> JsonLogic.apply(%{"if" => [false, "yes", "no" ]})
-      "no"
+  iex> JsonLogic.apply(%{"if" => [false, "yes", "no" ]})
+  "no"
 
-      iex> JsonLogic.apply(%{"if" => [false, "unexpected", false, "unexpected", "default" ]})
-      "default"
+  iex> JsonLogic.apply(%{"if" => [false, "unexpected", false, "unexpected", "default" ]})
+  "default"
 
-      iex> JsonLogic.apply(%{"or" => [false, nil, "truthy"]})
-      "truthy"
+  iex> JsonLogic.apply(%{"or" => [false, nil, "truthy"]})
+  "truthy"
 
-      iex> JsonLogic.apply(%{"or" => ["first", "truthy"]})
-      "first"
+  iex> JsonLogic.apply(%{"or" => ["first", "truthy"]})
+  "first"
 
-      iex> JsonLogic.apply(%{"and" => [false, "falsy"]})
-      false
+  iex> JsonLogic.apply(%{"and" => [false, "falsy"]})
+  false
 
-      iex> JsonLogic.apply(%{"and" => [true, 1, "truthy"]})
-      "truthy"
+  iex> JsonLogic.apply(%{"and" => [true, 1, "truthy"]})
+  "truthy"
 
-      iex> JsonLogic.apply(%{"max" => [1,2,3]})
-      3
+  iex> JsonLogic.apply(%{"max" => [1,2,3]})
+  3
 
-      iex> JsonLogic.apply(%{"min" => [1,2,3]})
-      1
+  iex> JsonLogic.apply(%{"min" => [1,2,3]})
+  1
 
-      iex> JsonLogic.apply(%{"<" => [0, 1]})
-      true
+  iex> JsonLogic.apply(%{"<" => [0, 1]})
+  true
 
-      iex> JsonLogic.apply(%{"<" => [1, 0]})
-      false
+  iex> JsonLogic.apply(%{"<" => [1, 0]})
+  false
 
-      iex> JsonLogic.apply(%{"<" => [0, 1, 2]})
-      true
+  iex> JsonLogic.apply(%{"<" => [0, 1, 2]})
+  true
 
-      iex> JsonLogic.apply(%{"<" => [0, 2, 1]})
-      false
+  iex> JsonLogic.apply(%{"<" => [0, 2, 1]})
+  false
 
-      iex> JsonLogic.apply(%{">" => [1, 0]})
-      true
+  iex> JsonLogic.apply(%{">" => [1, 0]})
+  true
 
-      iex> JsonLogic.apply(%{">" => [0, 1]})
-      false
+  iex> JsonLogic.apply(%{">" => [0, 1]})
+  false
 
-      iex> JsonLogic.apply(%{">" => [2, 1, 0]})
-      true
+  iex> JsonLogic.apply(%{">" => [2, 1, 0]})
+  true
 
-      iex> JsonLogic.apply(%{">" => [2, 0, 1]})
-      false
+  iex> JsonLogic.apply(%{">" => [2, 0, 1]})
+  false
 
-      iex> JsonLogic.apply(%{"<=" => [1, 1]})
-      true
+  iex> JsonLogic.apply(%{"<=" => [1, 1]})
+  true
 
-      iex> JsonLogic.apply(%{"<=" => [1, 0]})
-      false
+  iex> JsonLogic.apply(%{"<=" => [1, 0]})
+  false
 
-      iex> JsonLogic.apply(%{"<=" => [1, 1, 2]})
-      true
+  iex> JsonLogic.apply(%{"<=" => [1, 1, 2]})
+  true
 
-      iex> JsonLogic.apply(%{"<=" => [1, 0, 2]})
-      false
+  iex> JsonLogic.apply(%{"<=" => [1, 0, 2]})
+  false
 
-      iex> JsonLogic.apply(%{">=" => [1, 1]})
-      true
+  iex> JsonLogic.apply(%{">=" => [1, 1]})
+  true
 
-      iex> JsonLogic.apply(%{">=" => [0, 1]})
-      false
+  iex> JsonLogic.apply(%{">=" => [0, 1]})
+  false
 
-      iex> JsonLogic.apply(%{">=" => [1, 1, 0]})
-      true
+  iex> JsonLogic.apply(%{">=" => [1, 1, 0]})
+  true
 
-      iex> JsonLogic.apply(%{">=" => [0, 1, 2]})
-      false
+  iex> JsonLogic.apply(%{">=" => [0, 1, 2]})
+  false
 
-      iex> JsonLogic.apply(%{"+" => [1,2,3]})
-      6
+  iex> JsonLogic.apply(%{"+" => [1,2,3]})
+  6
 
-      iex> JsonLogic.apply(%{"+" => [2]})
-      2
+  iex> JsonLogic.apply(%{"+" => [2]})
+  2
 
-      iex> JsonLogic.apply(%{"-" => [7,4]})
-      3
+  iex> JsonLogic.apply(%{"-" => [7,4]})
+  3
 
-      iex> JsonLogic.apply(%{"-" => [2]})
-      -2
+  iex> JsonLogic.apply(%{"-" => [2]})
+  -2
 
-      iex> JsonLogic.apply(%{"*" => [2,3,4]})
-      24
+  iex> JsonLogic.apply(%{"*" => [2,3,4]})
+  24
 
-      iex> JsonLogic.apply(%{"/" => [5,2]})
-      2.5
+  iex> JsonLogic.apply(%{"/" => [5,2]})
+  2.5
 
-      iex> JsonLogic.apply(%{"%" => [7, 3]})
-      1
+  iex> JsonLogic.apply(%{"%" => [7, 3]})
+  1
 
-      iex> JsonLogic.apply(%{"map" => [ [1,2,3,4,5], %{"*" => [%{"var" => ""}, 2]} ]})
-      [2,4,6,8,10]
+  iex> JsonLogic.apply(%{"map" => [ [1,2,3,4,5], %{"*" => [%{"var" => ""}, 2]} ]})
+  [2,4,6,8,10]
 
-      iex> JsonLogic.apply(%{"filter" => [ [1,2,3,4,5], %{">" => [%{"var" => ""}, 2]} ]})
-      [3,4,5]
+  iex> JsonLogic.apply(%{"filter" => [ [1,2,3,4,5], %{">" => [%{"var" => ""}, 2]} ]})
+  [3,4,5]
 
-      iex> JsonLogic.apply(%{"reduce" => [ [1,2,3,4,5], %{"+" => [%{"var" => "current"}, %{"var" => "accumulator"}]}, 0]})
-      15
+  iex> JsonLogic.apply(%{"reduce" => [ [1,2,3,4,5], %{"+" => [%{"var" => "current"}, %{"var" => "accumulator"}]}, 0]})
+  15
 
-      iex> JsonLogic.apply(%{"all" => [ [1,2,3], %{">" => [ %{"var" => ""}, 0 ]} ]})
-      true
+  iex> JsonLogic.apply(%{"all" => [ [1,2,3], %{">" => [ %{"var" => ""}, 0 ]} ]})
+  true
 
-      iex> JsonLogic.apply(%{"all" => [ [-1,2,3], %{">" => [ %{"var" => ""}, 0 ]} ]})
-      false
+  iex> JsonLogic.apply(%{"all" => [ [-1,2,3], %{">" => [ %{"var" => ""}, 0 ]} ]})
+  false
 
-      iex> JsonLogic.apply(%{"none" => [ [1,2,3], %{"<" => [ %{"var" => ""}, 0 ]} ]})
-      true
+  iex> JsonLogic.apply(%{"none" => [ [1,2,3], %{"<" => [ %{"var" => ""}, 0 ]} ]})
+  true
 
-      iex> JsonLogic.apply(%{"none" => [ [-1,2,3], %{"<" => [ %{"var" => ""}, 0 ]} ]})
-      false
+  iex> JsonLogic.apply(%{"none" => [ [-1,2,3], %{"<" => [ %{"var" => ""}, 0 ]} ]})
+  false
 
-      iex> JsonLogic.apply(%{"some" => [ [-1,2,3], %{"<" => [ %{"var" => ""}, 0 ]} ]})
-      true
+  iex> JsonLogic.apply(%{"some" => [ [-1,2,3], %{"<" => [ %{"var" => ""}, 0 ]} ]})
+  true
 
-      iex> JsonLogic.apply(%{"some" => [ [1,2,3], %{"<" => [ %{"var" => ""}, 0 ]} ]})
-      false
+  iex> JsonLogic.apply(%{"some" => [ [1,2,3], %{"<" => [ %{"var" => ""}, 0 ]} ]})
+  false
 
-      iex> JsonLogic.apply(%{"in" => ["sub", "substring"]})
-      true
+  iex> JsonLogic.apply(%{"in" => ["sub", "substring"]})
+  true
 
-      iex> JsonLogic.apply(%{"in" => ["na", "substring"]})
-      false
+  iex> JsonLogic.apply(%{"in" => ["na", "substring"]})
+  false
 
-      iex> JsonLogic.apply(%{"in" => ["a", ["a", "b", "c"]]})
-      true
+  iex> JsonLogic.apply(%{"in" => ["a", ["a", "b", "c"]]})
+  true
 
-      iex> JsonLogic.apply(%{"in" => ["z", ["a", "b", "c"]]})
-      false
+  iex> JsonLogic.apply(%{"in" => ["z", ["a", "b", "c"]]})
+  false
 
-      iex> JsonLogic.apply(%{"cat" => ["a", "b", "c"]})
-      "abc"
+  iex> JsonLogic.apply(%{"cat" => ["a", "b", "c"]})
+  "abc"
 
-      iex> JsonLogic.apply(%{"log" => "string"})
-      "string"
+  iex> JsonLogic.apply(%{"log" => "string"})
+  "string"
+
+  iex> JsonLogic.apply(%{"iin" => ["sub", "Substring"]})
+  true
+
+  iex> JsonLogic.apply(%{"iin" => ["SUb", "substring"]})
+  true
+
+  iex> JsonLogic.apply(%{"iin" => ["na", "substring"]})
+  false
+
+  iex> JsonLogic.apply(%{"iin" => ["a", ["A", "B", "C"]]})
+  true
+
+  iex> JsonLogic.apply(%{"iin" => ["A", ["a", "b", "c"]]})
+  true
+
+  iex> JsonLogic.apply(%{"in" => ["z", ["a", "b", "c"]]})
+  false
+
   """
 
   @falsey [0, "", [], nil, false]
@@ -231,9 +250,10 @@ defmodule JsonLogic do
     "some" => :operation_some,
     "merge" => :operation_merge,
     "in" => :operation_in,
+    "iin" => :operation_iin,
     "cat" => :operation_cat,
     "substr" => :operation_substr,
-    "log" => :operation_log,
+    "log" => :operation_log
   }
 
   @doc """
@@ -241,18 +261,18 @@ defmodule JsonLogic do
   Accepts logic and data arguments as Map
   Returns resolved result as Map
   """
-  @spec apply(Map.t, Map.t) :: Map.t
+  @spec apply(Map.t(), Map.t()) :: Map.t()
   def apply(logic, data \\ nil)
 
   # operations selector branch of apply
   def apply(logic, data) when is_map(logic) and logic != %{} do
-    operation_name = logic |> Map.keys |> List.first
-    values = logic |> Map.values |> List.first
+    operation_name = logic |> Map.keys() |> List.first()
+    values = logic |> Map.values() |> List.first()
+
     case Map.fetch(@operations, operation_name) do
       {:ok, value} -> Kernel.apply(__MODULE__, value, [values, data])
       :error -> raise "Unrecognized operation `#{operation_name}`"
     end
-
   end
 
   # conclusive branch of apply
@@ -282,17 +302,25 @@ defmodule JsonLogic do
       string when is_binary(string) ->
         string
         |> String.split(".")
-        |> Enum.reduce(data, fn (key, acc) ->
+        |> Enum.reduce(data, fn key, acc ->
           cond do
-            is_nil(acc) -> nil
+            is_nil(acc) ->
+              nil
+
             is_list(acc) ->
               {index, _} = Integer.parse(key)
               Enum.at(acc, index)
-            is_map(acc) -> Map.get(acc, key)
-            true -> nil
+
+            is_map(acc) ->
+              Map.get(acc, key)
+
+            true ->
+              nil
           end
         end)
-      _ -> data
+
+      _ ->
+        data
     end
   end
 
@@ -316,6 +344,7 @@ defmodule JsonLogic do
     case JsonLogic.apply(keys, data) do
       list when is_list(list) ->
         operation_missing(list, data)
+
       elem ->
         operation_missing([elem], data)
     end
@@ -325,19 +354,25 @@ defmodule JsonLogic do
     case operation_missing(keys, data) do
       list when length(keys) - length(list) < min ->
         list
-      _ -> []
+
+      _ ->
+        []
     end
   end
 
   @doc false
   def operation_similar([left, right], data \\ nil) do
-    {op1, op2} = cast_comparison_operator JsonLogic.apply(left, data), JsonLogic.apply(right, data)
+    {op1, op2} =
+      cast_comparison_operator(JsonLogic.apply(left, data), JsonLogic.apply(right, data))
+
     op1 == op2
   end
 
   @doc false
   def operation_not_similar([left, right], data \\ nil) do
-    {op1, op2} = cast_comparison_operator JsonLogic.apply(left, data), JsonLogic.apply(right, data)
+    {op1, op2} =
+      cast_comparison_operator(JsonLogic.apply(left, data), JsonLogic.apply(right, data))
+
     op1 != op2
   end
 
@@ -427,24 +462,26 @@ defmodule JsonLogic do
 
   @doc false
   def operation_max(list, data) do
-    list |> Enum.map(fn(x) -> JsonLogic.apply(x, data) end) |> Enum.max
+    list |> Enum.map(fn x -> JsonLogic.apply(x, data) end) |> Enum.max()
   end
 
   @doc false
   def operation_min(list, data) do
-    list |> Enum.map(fn(x) -> JsonLogic.apply(x, data) end) |> Enum.min
+    list |> Enum.map(fn x -> JsonLogic.apply(x, data) end) |> Enum.min()
   end
 
   @doc false
   def operation_less_than([left, right], data) do
-    {op1, op2} = cast_comparison_operator JsonLogic.apply(left, data), JsonLogic.apply(right, data)
+    {op1, op2} =
+      cast_comparison_operator(JsonLogic.apply(left, data), JsonLogic.apply(right, data))
+
     op1 < op2
   end
 
   @doc false
   def operation_less_than([left, middle, right | _], data) do
     operation_less_than([left, middle], data) &&
-    operation_less_than([middle, right], data)
+      operation_less_than([middle, right], data)
   end
 
   @doc false
@@ -455,19 +492,21 @@ defmodule JsonLogic do
   @doc false
   def operation_greater_than([left, middle, right | _], data) do
     operation_greater_than([left, middle], data) &&
-    operation_greater_than([middle, right], data)
+      operation_greater_than([middle, right], data)
   end
 
   @doc false
   def operation_less_than_or_equal([left, right], data) do
-    {op1, op2} = cast_comparison_operator JsonLogic.apply(left, data), JsonLogic.apply(right, data)
+    {op1, op2} =
+      cast_comparison_operator(JsonLogic.apply(left, data), JsonLogic.apply(right, data))
+
     op1 <= op2
   end
 
   @doc false
   def operation_less_than_or_equal([left, middle, right | _], data) do
     operation_less_than_or_equal([left, middle], data) &&
-    operation_less_than_or_equal([middle, right], data)
+      operation_less_than_or_equal([middle, right], data)
   end
 
   @doc false
@@ -478,7 +517,7 @@ defmodule JsonLogic do
   @doc false
   def operation_greater_than_or_equal([left, middle, right | _], data) do
     operation_greater_than_or_equal([left, middle], data) &&
-    operation_greater_than_or_equal([middle, right], data)
+      operation_greater_than_or_equal([middle, right], data)
   end
 
   @doc false
@@ -494,19 +533,21 @@ defmodule JsonLogic do
           {num, _} = Integer.parse(str)
           total + num
         end
+
       num, total ->
         total + num
     end)
   end
 
-    def operation_addition(numbers, data) do
-      operation_addition([numbers], data)
-    end
-
+  def operation_addition(numbers, data) do
+    operation_addition([numbers], data)
+  end
 
   @doc false
   def operation_subtraction([first, last], data) do
-    {op1, op2} = cast_comparison_operator(JsonLogic.apply(first, data), JsonLogic.apply(last, data))
+    {op1, op2} =
+      cast_comparison_operator(JsonLogic.apply(first, data), JsonLogic.apply(last, data))
+
     op1 - op2
   end
 
@@ -528,13 +569,17 @@ defmodule JsonLogic do
           {num, _} = Integer.parse(str)
           total * num
         end
-      num, total -> total * num
+
+      num, total ->
+        total * num
     end)
   end
 
   @doc false
   def operation_division([first, last], data) do
-    {op1, op2} = cast_comparison_operator(JsonLogic.apply(first, data), JsonLogic.apply(last, data))
+    {op1, op2} =
+      cast_comparison_operator(JsonLogic.apply(first, data), JsonLogic.apply(last, data))
+
     op1 / op2
   end
 
@@ -547,15 +592,17 @@ defmodule JsonLogic do
   def operation_map([list, map_action], data) do
     case JsonLogic.apply(list, data) do
       list when is_list(list) ->
-        Enum.map(list, fn(item) -> JsonLogic.apply(map_action, item) end)
-      _ -> []
+        Enum.map(list, fn item -> JsonLogic.apply(map_action, item) end)
+
+      _ ->
+        []
     end
   end
 
   @doc false
   def operation_filter([list, filter_action], data) do
     JsonLogic.apply(list, data)
-    |> Enum.filter(fn(item) ->
+    |> Enum.filter(fn item ->
       operation_not_not(filter_action, item)
     end)
   end
@@ -567,12 +614,15 @@ defmodule JsonLogic do
 
   def operation_reduce([list, reduce_action, first], data) do
     eval_first = JsonLogic.apply(first, data)
+
     case JsonLogic.apply(list, data) do
       list when is_list(list) ->
-        Enum.reduce(list, eval_first, fn(item, accumulator) ->
+        Enum.reduce(list, eval_first, fn item, accumulator ->
           JsonLogic.apply(reduce_action, %{"current" => item, "accumulator" => accumulator})
         end)
-      _ -> first
+
+      _ ->
+        first
     end
   end
 
@@ -580,7 +630,7 @@ defmodule JsonLogic do
   def operation_all([list, test], data) do
     case JsonLogic.apply(list, data) do
       [] -> false
-      list when is_list(list) -> Enum.all?(list, fn(item) -> JsonLogic.apply(test, item) end)
+      list when is_list(list) -> Enum.all?(list, fn item -> JsonLogic.apply(test, item) end)
       _ -> false
     end
   end
@@ -588,13 +638,13 @@ defmodule JsonLogic do
   @doc false
   def operation_none([list, test], data) do
     JsonLogic.apply(list, data)
-    |> Enum.all?(fn(item) -> Kernel.if(JsonLogic.apply(test, item), do: false, else: true) end)
+    |> Enum.all?(fn item -> Kernel.if(JsonLogic.apply(test, item), do: false, else: true) end)
   end
 
   @doc false
   def operation_some([list, test], data) do
     JsonLogic.apply(list, data)
-    |> Enum.any?(fn(item) -> JsonLogic.apply(test, item) end)
+    |> Enum.any?(fn item -> JsonLogic.apply(test, item) end)
   end
 
   def operation_merge([], _data), do: []
@@ -603,6 +653,7 @@ defmodule JsonLogic do
     case JsonLogic.apply(elem, data) do
       list when is_list(list) ->
         list ++ operation_merge(rest, data)
+
       elem ->
         [elem | operation_merge(rest, data)]
     end
@@ -614,7 +665,7 @@ defmodule JsonLogic do
 
   @doc false
   def operation_in([member, list], data) when is_list(list) do
-    members = list |> Enum.map(fn(m) -> JsonLogic.apply(m, data) end)
+    members = list |> Enum.map(fn m -> JsonLogic.apply(m, data) end)
     Enum.member?(members, JsonLogic.apply(member, data))
   end
 
@@ -635,15 +686,15 @@ defmodule JsonLogic do
 
   @doc false
   def operation_cat(strings, data) when is_list(strings) do
-    strings |> Enum.map(fn(s) -> JsonLogic.apply(s, data) end) |> Enum.join
+    strings |> Enum.map(fn s -> JsonLogic.apply(s, data) end) |> Enum.join()
   end
 
-  def operation_cat(string, data)  do
+  def operation_cat(string, data) do
     JsonLogic.apply(string, data) |> to_string
   end
 
   @doc false
-  def operation_substr([string, offset], data)  do
+  def operation_substr([string, offset], data) do
     string
     |> JsonLogic.apply(data)
     |> String.slice(offset..-1)
@@ -677,4 +728,32 @@ defmodule JsonLogic do
   end
 
   defp cast_comparison_operator(op1, op2), do: {op1, op2}
+
+  @doc false
+  def operation_iin([member, list], data) when is_list(list) do
+    members =
+      list
+      |> Enum.map(fn m -> JsonLogic.apply(m, data) end)
+      |> Enum.map(fn
+        x when is_binary(x) -> String.downcase(x)
+        x -> x
+      end)
+
+    Enum.member?(members, String.downcase(JsonLogic.apply(member, data)))
+  end
+
+  @doc false
+  def operation_iin([substring, string], data) when is_binary(string) do
+    String.contains?(String.downcase(string), String.downcase(JsonLogic.apply(substring, data)))
+  end
+
+  @doc false
+  def operation_iin([_, from], _) when is_nil(from) do
+    false
+  end
+
+  @doc false
+  def operation_iin([find, from], data) do
+    operation_iin([JsonLogic.apply(find, data), JsonLogic.apply(from, data)], data)
+  end
 end
